@@ -1,0 +1,26 @@
+// Mobile first media query
+
+// 601 - 900 ipad portrait, phone landscape
+@mixin tablet-portrait-up{
+    @media (min-width: 601px){ @content;}
+}
+
+// 901 - 1200 ipad landscape, ipad pro portrait
+@mixin tablet-landscape-up{
+    @media (min-width: 901px){ @content;}
+}
+
+// 1201 - 1280 mdpi
+@mixin mdpi-up{
+    @media (min-width: 1201px){ @content;}
+}
+
+// 1281 - 1440 hdpi, ipad pro landscape
+@mixin hdpi-up{
+    @media (min-width: 1281px){ @content;}
+}
+
+// >= 1441 widescreen
+@mixin widescreen-up{
+    @media (min-width: 1441px){ @content;}
+}

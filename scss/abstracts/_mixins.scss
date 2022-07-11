@@ -1,0 +1,19 @@
+@use 'variables' as *;
+
+@mixin flex($direction:row, $align:stretch, $justify:flex-start, $gap:0, $important:false){
+    @if $important == false{
+        display: flex;
+    }
+    @else{
+        display: flex !important;
+    }
+    flex-direction: $direction;
+    align-items: $align;
+    justify-content: $justify;
+    gap: $gap;
+}
+
+@mixin grid-equal($columns:1){
+    display: grid;
+    grid-template-columns: repeat($columns, 1fr);
+}

@@ -1,0 +1,95 @@
+@import url("https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: none;
+  font-weight: 400;
+  background-color: none;
+  list-style-type: none;
+  color: #383838;
+  font-size: 12px;
+  text-decoration: none;
+  outline: none;
+  font-family: "Albert Sans", sans-serif;
+}
+
+h1 {
+  font-size: 36px;
+  font-weight: 800;
+}
+
+h2 {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+body {
+  height: 100vh;
+  background: #c7d8f1;
+}
+body main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4em;
+  height: 100%;
+  position: relative;
+}
+body main .light-container {
+  position: relative;
+  margin-bottom: 5em;
+}
+body main .light-container .light {
+  position: absolute;
+  z-index: 1;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-1.5em);
+}
+body main .light-container .light .handle {
+  height: 3em;
+  width: 3em;
+  border-radius: 3em;
+  cursor: move;
+  background-color: white;
+  z-index: 2;
+  box-shadow: 0px 0px 10px rgb(255, 255, 255);
+}
+body main .subject {
+  display: flex;
+  font-size: 1rem;
+  height: 20em;
+  width: 20em;
+  border-radius: 4em;
+  padding: 2px;
+  box-shadow: 0px 30px 60px #acbce6, 0px -25px 60px #fff, inset 0px 15px 15px #e6edfa;
+}
+body main .subject::after {
+  content: "";
+  width: 100%;
+  height: 100%;
+  background: #d7e5f9;
+  border-radius: inherit;
+}
+body main .controls .title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+  max-width: 400px;
+}
+body main .controls .title h1 {
+  color: #8165aa;
+  font-size: 2.5em;
+  font-weight: 700;
+  text-align: center;
+}
+body main .controls .title p {
+  color: #b698df;
+  font-size: 1.25em;
+  text-align: center;
+  font-weight: 500;
+}/*# sourceMappingURL=syle.css.map */
