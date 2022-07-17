@@ -1,89 +1,104 @@
-// Make the DIV element draggable:
-dragElement(document.getElementById("light"));
+//setup onmousedown event
+const lightSource = document.getElementById('light');
+const subject = document.getElementById('subject');
 
-//output styles
-outputStyles = {
-    boxShadow: ''
+dragElement(lightSource, applyNeumorphism(subject, 2, 1, '#9dadd8', '#fff', '#fff'))
+
+// Make element draggable. SideEffect is then returned as a callback function
+function dragElement(element, sideEffect){ 
+    element.addEventListener('mousedown', addDragEvent)
+
+    function addDragEvent(event){
+        event.preventDefault();
+    
+        let 
+        element = event.target,
+        position = {
+            x: event.clientX,
+            y: event.clientY
+        }
+    
+        document.onmousemove = updatePosition;
+        document.onmouseup = cancelDrag;
+    
+        // calculate and set using the new cursor position:
+        function updatePosition({ clientX, clientY }){
+            let newPosition = {
+                x: position.x - clientX,
+                y: position.y - clientY
+            }
+    
+            //set position to cursor position
+            position.x = clientX;
+            position.y = clientY;
+    
+            // set the element's new position:
+            element.style.top = (element.offsetTop - newPosition.y) + "px";
+            element.style.left = (element.offsetLeft - newPosition.x) + "px";
+
+            //fire the sideEffect callback
+            return sideEffect(element, position)
+        }
+    
+        // stop moving when mouse button is released:
+        function cancelDrag() {
+            document.onmouseup = null;
+            document.onmousemove = null;
+        }
+    }
 }
 
-function dragElement(elmnt) {
-  let final = {x: 0, y: 0}, 
-  initial = {x: 0, y: 0},
-  centerPoint = {
-      x: window.innerWidth/2,
-      y: window.innerHeight/2
-  }
-  
-  document.getElementById("light-handle").onmousedown = dragMouseDown;
+// centerElement will be the reference (0, 0) where shadow angles will be calculated
+function applyNeumorphism(centerElement, intensity, size, shadowColor, highlightColor, shineColor){
+    
+    return function (lightElement, lightPosition){
+        const centerPoint = getCenterPoint(centerElement);
+        const angleRad = getAngle(centerPoint, lightPosition);
+        const coordinates = getCoordinates(angleRad, 30);
+        const boxShadow = createBoxShadow(coordinates, intensity, size, shadowColor, highlightColor, shineColor);
 
-  function dragMouseDown() {
-    e = window.event;
-    e.preventDefault();
-    // get the mouse cursor position at startup:
-    initial.x = e.clientX;
-    initial.y = e.clientY;
-    document.onmouseup = closeDragElement;
-    // call a function whenever the cursor moves:
-    document.onmousemove = elementDrag;
-  }
+        //apply box shadow
+        applyBoxShadow(centerElement, boxShadow)
+    }
 
-  function elementDrag() {
-    e = window.event;
-    e.preventDefault();
-    // calculate the new cursor position:
-    final.x = initial.x - e.clientX;
-    final.y = initial.y - e.clientY;
-    initial.x = e.clientX;
-    initial.y = e.clientY;
-    // set the element's new position:
-    elmnt.style.top = (elmnt.offsetTop - final.y) + "px";
-    elmnt.style.left = (elmnt.offsetLeft - final.x) + "px";
-
-    applyNeumorphicEffect();
-  }
-
-  function closeDragElement() {
-    // stop moving when mouse button is released:
-    document.onmouseup = null;
-    document.onmousemove = null;
-  }
-
-  function applyNeumorphicEffect(){
-      const coordinates = {
-          x: initial.x - centerPoint.x,
-          y: centerPoint.y - initial.y
-      }
-      //using the x and y coordinates of the light-source, calculate the angle using arctan
-      const angleRad = Math.atan2(coordinates.y, coordinates.x)
-      const staticCoordinates = {
-          x: 30*Math.cos(angleRad),
-          y: 30*Math.sin(angleRad)
-      }
-      const s = boxShadowParameters(staticCoordinates);
-
-      //set neumorphic element style 'box-shadow' using the angle
-      document.querySelectorAll('.neumorphic').forEach(element => {
-          boxShadow = `${s.shadow.x}px ${s.shadow.y}px 60px #acbce6, ${s.highlight.x}px ${s.highlight.y}px 60px #fff, inset ${s.insetHighlight.x}px ${s.insetHighlight.y}px 15px #e6edfa`
-          element.style = `box-shadow: ${boxShadow}`;
-          document.querySelector('#box-shadow-value').innerText = boxShadow;
-      })
-  }
-
-//get box shadow parameters using coordinate, intensity and size
-  function boxShadowParameters(coordinates, intensity = 1, size){
-      return {
-        highlight: {
-            x: Math.floor(coordinates.x * intensity),
-            y: Math.floor(coordinates.y * intensity)*-1
-        },
-        shadow: {
-            x: Math.floor(coordinates.x * intensity)*-1,
-            y: Math.floor(coordinates.y * intensity)
-        },
-        insetHighlight: {
-            x: Math.floor(coordinates.x * intensity)*-1,
-            y: Math.floor(coordinates.y * intensity)
+    function getCenterPoint(element){
+        let c = element.getBoundingClientRect()
+        return {
+            x: (c.left + c.right) / 2,
+            y: (c.top + c.bottom) / 2
         }
-      }
-  }
+    }
+
+    function getAngle(center, point){
+        return Math.atan2((center.y - point.y), (point.x - center.x))
+    }
+
+    function getCoordinates(angle, radius){
+        return {
+            x: radius*Math.cos(angle),
+            y: radius*Math.sin(angle)
+        }
+    }
+
+    function createBoxShadow(coordinates, intensity, size, shadowColor, highlightColor, shineColor){
+        const parameters = {
+            highlight: {
+                x: Math.floor(coordinates.x * intensity),
+                y: Math.floor(coordinates.y * intensity)*-1
+            },
+            shadow: {
+                x: Math.floor(coordinates.x * intensity)*-1,
+                y: Math.floor(coordinates.y * intensity)
+            },
+            insetHighlight: {
+                x: Math.floor(coordinates.x * intensity)*-1,
+                y: Math.floor(coordinates.y * intensity)
+            }
+        }
+        return `${parameters.shadow.x}px ${parameters.shadow.y}px 60px 0px ${shadowColor}, ${parameters.highlight.x}px ${parameters.highlight.y}px 60px 0px ${highlightColor}, inset ${parameters.insetHighlight.x}px ${parameters.insetHighlight.y}px 15px 0px ${shineColor}`
+    }
+
+    function applyBoxShadow(element, boxShadow){
+        element.style.boxShadow = boxShadow;
+    }  
 }

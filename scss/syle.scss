@@ -18,15 +18,17 @@ body{
                 $size: 3em;
                 position: absolute;
                 z-index: 1;
+                cursor: move;
                 top: 20%;
                 left: 50%;
                 transform: translateX(-$size/2);
     
-                .handle{
+                &::after{
+                    content: '';
+                    display: block;
                     height: $size;
                     width: $size;
                     border-radius: $size;
-                    cursor: move;
                     background-color: white;
                     z-index:2;
                     box-shadow: 0px 0px 10px rgb(255 255 255);
@@ -41,7 +43,8 @@ body{
             width: 20em;
             border-radius: 4em;
             padding: 2px;
-            box-shadow:  0px 30px 60px #acbce6, 0px -25px 60px #fff, inset 0px 15px 15px #e6edfa;
+            background-color: #9daedb;
+            box-shadow:  0px 60px 60px #9dadd8, 0px -60px 60px #fff, inset 0px 15px 15px #fff;
 
             &::after{
                 content: '';

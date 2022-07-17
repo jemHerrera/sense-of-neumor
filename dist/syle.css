@@ -44,15 +44,17 @@ body main .light-container {
 body main .light-container .light {
   position: absolute;
   z-index: 1;
+  cursor: move;
   top: 20%;
   left: 50%;
   transform: translateX(-1.5em);
 }
-body main .light-container .light .handle {
+body main .light-container .light::after {
+  content: "";
+  display: block;
   height: 3em;
   width: 3em;
   border-radius: 3em;
-  cursor: move;
   background-color: white;
   z-index: 2;
   box-shadow: 0px 0px 10px rgb(255, 255, 255);
@@ -64,7 +66,8 @@ body main .subject {
   width: 20em;
   border-radius: 4em;
   padding: 2px;
-  box-shadow: 0px 30px 60px #acbce6, 0px -25px 60px #fff, inset 0px 15px 15px #e6edfa;
+  background-color: #9daedb;
+  box-shadow: 0px 60px 60px #9dadd8, 0px -60px 60px #fff, inset 0px 15px 15px #fff;
 }
 body main .subject::after {
   content: "";
